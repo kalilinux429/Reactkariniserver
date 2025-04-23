@@ -17,8 +17,8 @@ mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.error("❌ MongoDB error:", err));
+  .then(() => console.log(" MongoDB connected"))
+  .catch(err => console.error(" MongoDB error:", err));
 
 // Routes
 app.get("/api/products", async (req, res) => {
