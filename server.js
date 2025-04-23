@@ -1,25 +1,26 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const Product = require("./models/Product");
+const Product = require("./models/product");
 const data = require("./products/data.json");
+require("dotenv").config(); // Load environment variables from .env
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-const PORT = 5000;
-const MONGO_URI = "mongodb+srv://User2025:Vipasna123@cluster0.vtfeg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"; // or your MongoDB Atlas URI
+const PORT = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI;
 
-// Connect to MongoDB without deprecated options
-mongoose.connect(MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.error("MongoDB error:", err));
+// Connect to MongoDB
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB error:", err));
 
-
-
-// Get all products
+// Routes
 app.get("/api/products", async (req, res) => {
   try {
     const products = await Product.find();
@@ -29,6 +30,11 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
+// Default route
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
+
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
